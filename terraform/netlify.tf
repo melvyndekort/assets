@@ -1,5 +1,5 @@
 resource "netlify_site" "assets" {
-  name = "assets"
+  name = "mdekort-assets"
 
   repo {
     repo_branch = "main"
