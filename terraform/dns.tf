@@ -3,6 +3,6 @@ resource "cloudflare_record" "assets" {
   name    = "assets"
   type    = "CNAME"
   ttl     = 1
-  proxied = true
+  proxied = false
   value   = "mdekort-assets.netlify.app"
 }
