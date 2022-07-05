@@ -1,1 +1,9 @@
+node_modules/
+public/
+resources/
+go.sum
+.hugo_build.lock
+
+.terraform/
+.terraform.lock.hcl
 secrets.yaml
