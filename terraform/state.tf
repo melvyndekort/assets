@@ -17,3 +17,7 @@ data "terraform_remote_state" "cloudsetup" {
     region = "eu-west-1"
   }
 }
+
+locals {
+  cloudflare_account_id = data.terraform_remote_state.cloudsetup.outputs.cloudflare_account_id
+}
