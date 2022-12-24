@@ -8,5 +8,5 @@ terraform {
 }
 
 provider "cloudflare" {
-  api_token = data.terraform_remote_state.cloudsetup.outputs.api_token_apex_mdekort
+  api_token = data.terraform_remote_state.cloudsetup.outputs.api_token_assets
 }

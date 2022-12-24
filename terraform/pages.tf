@@ -7,7 +7,7 @@ resource "cloudflare_pages_project" "site" {
 resource "cloudflare_pages_domain" "site" {
   account_id   = local.cloudflare_account_id
   project_name = cloudflare_pages_project.site.name
-  domain       = var.domain_name
+  domain       = cloudflare_record.site.hostname
 
   depends_on = [
     cloudflare_pages_project.site,
