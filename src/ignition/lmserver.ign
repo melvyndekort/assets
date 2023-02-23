@@ -1,0 +1,119 @@
+{
+  "ignition": {
+    "version": "3.3.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "name": "core",
+        "sshAuthorizedKeys": [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFJhPTPfNQuNCuz9AESupcGOwLtg8Xp+qTnv2+qU94O",
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCuyHMuKWZIxf63X1Ve6nU6+D/Ku+Y6c2pC8OYMDbzQrxr1AQCvoxP/zVimLbl4cur66GXE3RqcRH6UHC1q6YR2vlWBcZvDlojnHWRmqvcFlsuv7RxdF5DVatzrfQ6l1m0jy+Ey3djBGKwH5fIxKTpMZVkERFXYSNDLwyMqTisbBI9e32nOHFeG5dcH6mdloAyICbdMnDTn5pl1ztjEOqZ+TKtv0ZEf4o0iHMCKFwJBJnJ2OGTqNycjt6VeTPaMdpGetfCxCuA7lmdGV6IoooEkxKTp9J1+DBmTTGgo1ivfb6EZVSL6EQysieL+eYhcASKkiKaoQOylqysHbk49TJUBMX2H3yLq9N80h6dhDjtdWtCpuaD0KKpnxF5J3agi9z2gywVgzv38hik2ApE1T0ny/ZtwnnXOw3sNMaS6yBp9yw/KqsuKBrSqDYufqQbsce/sAjzR4B4ELauvol0AvlK+5gSDTZoDI6VgbOyJkFVFZbkOqAXTZZ/cBPJ8+ZzSBsNjW6YHvl7mJsdi9ZuUT2OhH2CKF3+rcVaBBcdzMqSMcwUWYf5J4n7yTleCuPau+klkHzM+QbHEPN+65dSqdk0nwgSiwK0OaalHuYNVlNPyji1lkLVLFwsgpE7lIpRxPrYOI6fVY/Fo0EhW3oIktvyohKRF1TaISsILRr2m/b7VLQ==",
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCse8TLb47f+zddmzm0EvO6+RK8eeQouClEFA33ftG6+ioiJxkNf+vXwtWVlmA4JzwhLDQ5tKk+SQ9OTg/JMB8O9VfaK9LHxhJhLdiNo+P8W/vK9BI6CNCA1F+rbzN3OtEavYum7eHxeUrnYM+VkGyUpi5zmbHYF30VgxYeLMoK66eriFo+EHoQwv137uUgGYxe1BLGwkHjWdZ6wgjPkZTu4QoAsdxptVZH16TsFJKEQJdetJbJQ+I86yPjZ4AU5ImzdWUbUA4ic8gIZDhZeLz2UCmRB/EilNVKzQb+m54rE+cRH7f63zcEkqnAb5Ugz+XRMtdtqxcx2x9Eza2ohk8ZblyE8s3D2c4KR4YKzZJhuakK/sQ9FKOJo6vy2G6Mq1PMUhMF3rn+whUzXBpV2A0XK8P0H7/D+7zsGnQH+NZb6akgE+SqonL+zK430xWhWvoE7irtPh9CeG8+AF9OD+nbGBs22HpXCeR+yW2tPfJQtHLBOkaWyzJIsqfl4cMWaCRMnRKl/QEJuu9dG3rtOcZyBvkBnKd0X1GNIN5t1BMuhKghkipBgrG2oMM3hBRafHafrg26ikIImuImqVvaWZWeKKjU5tsivu/PELa4vyF/PqJ7meFqf1V2Jpw2Z21nSVQsgXK34Kbx5r6GSIdea+9cdEsJabKS7VrqwmSY8NjCZQ=="
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "files": [
+      {
+        "path": "/etc/hostname",
+        "contents": {
+          "compression": "",
+          "source": "data:,lmserver"
+        },
+        "mode": 420
+      }
+    ],
+    "links": [
+      {
+        "path": "/etc/localtime",
+        "target": "/usr/share/zoneinfo/Europe/Amsterdam"
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "contents": "[Unit]\nDescription=Mount storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount audiobooks storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/audiobooks\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@audiobooks\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-audiobooks.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount backups storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/backups\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@backups\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-backups.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount docker storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/docker\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@docker\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-docker.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount downloads storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/downloads\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@downloads\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-downloads.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount ebooks storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/ebooks\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@ebooks\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-ebooks.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount kids storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/kids\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@kids\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-kids.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount movies storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/movies\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@movies\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-movies.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount music storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/music\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@music\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-music.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount nextcloud storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/nextcloud\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@nextcloud\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-nextcloud.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount photos storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/photos\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@photos\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-photos.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount software storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/software\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@software\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-software.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount syncthing storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/syncthing\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@syncthing\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-syncthing.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount torrents storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/torrents\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@torrents\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-torrents.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Mount tvshows storage directory\n\n[Mount]\nWhat=/dev/disk/by-label/storage\nWhere=/storage/tvshows\nType=btrfs\nOptions=defaults,nofail,noatime,autodefrag,subvol=@tvshows\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "storage-tvshows.mount"
+      },
+      {
+        "contents": "[Unit]\nDescription=Run Portainer\nAfter=network-online.target\nWants=network-online.target\n\n[Service]\nExecStartPre=mkdir -p /storage/docker/portainer\nExecStartPre=-/bin/podman kill %n\nExecStartPre=-/bin/podman rm %n\nExecStartPre=-/bin/podman network create --attachable lmserver\nExecStartPre=-/bin/podman pull portainer/portainer-ce:alpine\nExecStart=/bin/podman run \\\n  --name %n \\\n  --volume /storage/docker/portainer:/data \\\n  --volume /var/run/podman.sock:/var/run/docker.sock:ro \\\n  --log-driver syslog \\\n  --log-opt syslog-address: udp://127.0.0.1:515 \\\n  --log-opt tag: {{.Name}}/{{.FullID}} \\\n  --network lmserver \\\n  --publish 9000:9000 \\\n  --publish 9443:9443 \\\n  --label traefik.enable=true \\\n  --label traefik.http.routers.portainer.entrypoints=websecure \\\n  --label traefik.http.routers.portainer.rule=Host(`lmserver.mdekort.nl`) \u0026\u0026 PathPrefix(`/portainer`) \\\n  --label traefik.http.services.portainer.loadbalancer.server.port=9000 \\\n  --label traefik.http.routers.portainer.tls=true \\\n  --label traefik.http.routers.portainer.tls.certresolver=mdekort \\\n  --label traefik.http.middlewares.portainer_stripprefix.stripprefix.prefixes=/portainer \\\n  --label traefik.http.middlewares.portainer_stripprefix.stripprefix.forceslash=false \\\n  --label traefik.http.routers.portainer.middlewares=portainer_stripprefix@docker \\\n  portainer/portainer-ce:alpine \\\n  --admin-password admin\n\nExecStop=/bin/podman stop %n\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "portainer.service"
+      }
+    ]
+  }
+}
