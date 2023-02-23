@@ -1,0 +1,270 @@
+variant: fcos
+version: 1.4.0
+storage:
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: lmserver
+  links:
+    - path: /etc/localtime
+      target: /usr/share/zoneinfo/Europe/Amsterdam
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMFJhPTPfNQuNCuz9AESupcGOwLtg8Xp+qTnv2+qU94O
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCuyHMuKWZIxf63X1Ve6nU6+D/Ku+Y6c2pC8OYMDbzQrxr1AQCvoxP/zVimLbl4cur66GXE3RqcRH6UHC1q6YR2vlWBcZvDlojnHWRmqvcFlsuv7RxdF5DVatzrfQ6l1m0jy+Ey3djBGKwH5fIxKTpMZVkERFXYSNDLwyMqTisbBI9e32nOHFeG5dcH6mdloAyICbdMnDTn5pl1ztjEOqZ+TKtv0ZEf4o0iHMCKFwJBJnJ2OGTqNycjt6VeTPaMdpGetfCxCuA7lmdGV6IoooEkxKTp9J1+DBmTTGgo1ivfb6EZVSL6EQysieL+eYhcASKkiKaoQOylqysHbk49TJUBMX2H3yLq9N80h6dhDjtdWtCpuaD0KKpnxF5J3agi9z2gywVgzv38hik2ApE1T0ny/ZtwnnXOw3sNMaS6yBp9yw/KqsuKBrSqDYufqQbsce/sAjzR4B4ELauvol0AvlK+5gSDTZoDI6VgbOyJkFVFZbkOqAXTZZ/cBPJ8+ZzSBsNjW6YHvl7mJsdi9ZuUT2OhH2CKF3+rcVaBBcdzMqSMcwUWYf5J4n7yTleCuPau+klkHzM+QbHEPN+65dSqdk0nwgSiwK0OaalHuYNVlNPyji1lkLVLFwsgpE7lIpRxPrYOI6fVY/Fo0EhW3oIktvyohKRF1TaISsILRr2m/b7VLQ==
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCse8TLb47f+zddmzm0EvO6+RK8eeQouClEFA33ftG6+ioiJxkNf+vXwtWVlmA4JzwhLDQ5tKk+SQ9OTg/JMB8O9VfaK9LHxhJhLdiNo+P8W/vK9BI6CNCA1F+rbzN3OtEavYum7eHxeUrnYM+VkGyUpi5zmbHYF30VgxYeLMoK66eriFo+EHoQwv137uUgGYxe1BLGwkHjWdZ6wgjPkZTu4QoAsdxptVZH16TsFJKEQJdetJbJQ+I86yPjZ4AU5ImzdWUbUA4ic8gIZDhZeLz2UCmRB/EilNVKzQb+m54rE+cRH7f63zcEkqnAb5Ugz+XRMtdtqxcx2x9Eza2ohk8ZblyE8s3D2c4KR4YKzZJhuakK/sQ9FKOJo6vy2G6Mq1PMUhMF3rn+whUzXBpV2A0XK8P0H7/D+7zsGnQH+NZb6akgE+SqonL+zK430xWhWvoE7irtPh9CeG8+AF9OD+nbGBs22HpXCeR+yW2tPfJQtHLBOkaWyzJIsqfl4cMWaCRMnRKl/QEJuu9dG3rtOcZyBvkBnKd0X1GNIN5t1BMuhKghkipBgrG2oMM3hBRafHafrg26ikIImuImqVvaWZWeKKjU5tsivu/PELa4vyF/PqJ7meFqf1V2Jpw2Z21nSVQsgXK34Kbx5r6GSIdea+9cdEsJabKS7VrqwmSY8NjCZQ==
+systemd:
+  units:
+    - name: storage.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-audiobooks.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount audiobooks storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/audiobooks
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@audiobooks
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-backups.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount backups storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/backups
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@backups
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-docker.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount docker storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/docker
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@docker
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-downloads.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount downloads storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/downloads
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@downloads
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-ebooks.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount ebooks storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/ebooks
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@ebooks
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-kids.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount kids storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/kids
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@kids
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-movies.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount movies storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/movies
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@movies
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-music.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount music storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/music
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@music
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-nextcloud.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount nextcloud storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/nextcloud
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@nextcloud
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-photos.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount photos storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/photos
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@photos
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-software.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount software storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/software
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@software
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-syncthing.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount syncthing storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/syncthing
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@syncthing
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-torrents.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount torrents storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/torrents
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@torrents
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: storage-tvshows.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Mount tvshows storage directory
+
+        [Mount]
+        What=/dev/disk/by-label/storage
+        Where=/storage/tvshows
+        Type=btrfs
+        Options=defaults,nofail,noatime,autodefrag,subvol=@tvshows
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: portainer.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Run Portainer
+        After=network-online.target
+        Wants=network-online.target
+        
+        [Service]
+        ExecStartPre=mkdir -p /storage/docker/portainer
+        ExecStartPre=-/bin/podman kill %n
+        ExecStartPre=-/bin/podman rm %n
+        ExecStartPre=-/bin/podman network create --attachable lmserver
+        ExecStartPre=-/bin/podman pull portainer/portainer-ce:alpine
+        ExecStart=/bin/podman run \
+          --name %n \
+          --volume /storage/docker/portainer:/data \
+          --volume /var/run/podman.sock:/var/run/docker.sock:ro \
+          --log-driver syslog \
+          --log-opt syslog-address: udp://127.0.0.1:515 \
+          --log-opt tag: {{.Name}}/{{.FullID}} \
+          --network lmserver \
+          --publish 9000:9000 \
+          --publish 9443:9443 \
+          --label traefik.enable=true \
+          --label traefik.http.routers.portainer.entrypoints=websecure \
+          --label traefik.http.routers.portainer.rule=Host(`lmserver.mdekort.nl`) && PathPrefix(`/portainer`) \
+          --label traefik.http.services.portainer.loadbalancer.server.port=9000 \
+          --label traefik.http.routers.portainer.tls=true \
+          --label traefik.http.routers.portainer.tls.certresolver=mdekort \
+          --label traefik.http.middlewares.portainer_stripprefix.stripprefix.prefixes=/portainer \
+          --label traefik.http.middlewares.portainer_stripprefix.stripprefix.forceslash=false \
+          --label traefik.http.routers.portainer.middlewares=portainer_stripprefix@docker \
+          portainer/portainer-ce:alpine \
+          --admin-password admin
+
+        ExecStop=/bin/podman stop %n
+        
+        [Install]
+        WantedBy=multi-user.target

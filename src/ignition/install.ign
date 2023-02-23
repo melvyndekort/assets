@@ -1,0 +1,10 @@
+{
+  "ignition": {
+    "config": {
+      "replace": {
+        "source": "https://assets.mdekort.nl/ignition/lmserver.ign"
+      }
+    },
+    "version": "3.3.0"
+  }
+}

@@ -1,0 +1,7 @@
+variant: fcos
+version: 1.4.0
+ignition:
+  config:
+    replace:
+      source: https://assets.mdekort.nl/ignition/lmserver.ign
+
