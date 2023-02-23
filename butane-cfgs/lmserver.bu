@@ -34,47 +34,67 @@ systemd:
 
         [Install]
         WantedBy=multi-user.target
-    - name: docker.service
-      enabled: true
-    - name: portainer.service
+    - name: scrubber.service
       enabled: true
       contents: |
         [Unit]
-        Description=Run Portainer
-        After=network-online.target
-        Wants=network-online.target
-        
+        Description=BTRFS scrub the /storage filesystem
+
         [Service]
+        ExecStart=btrfs scrub start -Bd /dev/disk/by-label/storage
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: scrubber.timer
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Scrubber service timer
+
+        [Timer]
+        OnCalendar=monthly
+        AccuracySec=12h
+        Persistent=true
+        Unit=scrubber.service
+
+        [Install]
+        WantedBy=basic.target
+    - name: docker.service
+      enabled: true
+    - name: docker.portainer.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Portainer Service
+        After=docker.service
+        Requires=docker.service
+
+        [Service]
+        Restart=always
         ExecStartPre=mkdir -p /storage/docker/portainer
-        ExecStartPre=-/usr/bin/docker rm -f %n
+        ExecStartPre=-/usr/bin/docker rm -f portainer
         ExecStartPre=-/usr/bin/docker network create --attachable lmserver
         ExecStartPre=-/usr/bin/docker pull portainer/portainer-ce:alpine
         ExecStart=/usr/bin/docker run \
-          --name %n \
-          --detach \
+          --name portainer \
+          --rm \
           --volume /storage/docker/portainer:/data \
-          --volume /var/run/podman.sock:/var/run/docker.sock:ro \
+          --volume /var/run/docker.sock:/var/run/docker.sock:ro \
           --log-driver syslog \
-          --log-opt syslog-address: udp://127.0.0.1:515 \
-          --log-opt tag: {{.Name}}/{{.FullID}} \
+          --log-opt 'syslog-address=udp://127.0.0.1:515' \
+          --log-opt 'tag={{.Name}}/{{.FullID}}' \
           --network lmserver \
           --publish 9000:9000 \
-          --publish 9443:9443 \
           --label traefik.enable=true \
           --label traefik.http.routers.portainer.entrypoints=websecure \
-          --label traefik.http.routers.portainer.rule=Host(`lmserver.mdekort.nl`) && PathPrefix(`/portainer`) \
+          --label traefik.http.routers.portainer.rule='Host(`lmserver.mdekort.nl`) && PathPrefix(`/portainer`)' \
           --label traefik.http.services.portainer.loadbalancer.server.port=9000 \
           --label traefik.http.routers.portainer.tls=true \
           --label traefik.http.routers.portainer.tls.certresolver=mdekort \
           --label traefik.http.middlewares.portainer_stripprefix.stripprefix.prefixes=/portainer \
           --label traefik.http.middlewares.portainer_stripprefix.stripprefix.forceslash=false \
           --label traefik.http.routers.portainer.middlewares=portainer_stripprefix@docker \
-          portainer/portainer-ce:alpine \
-          --admin-password admin
+          portainer/portainer-ce:alpine
 
-        ExecStop=/usr/bin/docker stop %n
-        ExecStopPost=/usr/bin/docker rm -f %n
-        Type=forking
-        
         [Install]
         WantedBy=multi-user.target
