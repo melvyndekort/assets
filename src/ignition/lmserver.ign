@@ -45,13 +45,23 @@
         "name": "storage.mount"
       },
       {
+        "contents": "[Unit]\nDescription=BTRFS scrub the /storage filesystem\n\n[Service]\nExecStart=btrfs scrub start -Bd /dev/disk/by-label/storage\n\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "scrubber.service"
+      },
+      {
+        "contents": "[Unit]\nDescription=Scrubber service timer\n\n[Timer]\nOnCalendar=monthly\nAccuracySec=12h\nPersistent=true\nUnit=scrubber.service\n\n[Install]\nWantedBy=basic.target\n",
+        "enabled": true,
+        "name": "scrubber.timer"
+      },
+      {
         "enabled": true,
         "name": "docker.service"
       },
       {
-        "contents": "[Unit]\nDescription=Run Portainer\nAfter=network-online.target\nWants=network-online.target\n\n[Service]\nExecStartPre=mkdir -p /storage/docker/portainer\nExecStartPre=-/usr/bin/docker rm -f %n\nExecStartPre=-/usr/bin/docker network create --attachable lmserver\nExecStartPre=-/usr/bin/docker pull portainer/portainer-ce:alpine\nExecStart=/usr/bin/docker run \\\n  --name %n \\\n  --detach \\\n  --volume /storage/docker/portainer:/data \\\n  --volume /var/run/podman.sock:/var/run/docker.sock:ro \\\n  --log-driver syslog \\\n  --log-opt syslog-address: udp://127.0.0.1:515 \\\n  --log-opt tag: {{.Name}}/{{.FullID}} \\\n  --network lmserver \\\n  --publish 9000:9000 \\\n  --publish 9443:9443 \\\n  --label traefik.enable=true \\\n  --label traefik.http.routers.portainer.entrypoints=websecure \\\n  --label traefik.http.routers.portainer.rule=Host(`lmserver.mdekort.nl`) \u0026\u0026 PathPrefix(`/portainer`) \\\n  --label traefik.http.services.portainer.loadbalancer.server.port=9000 \\\n  --label traefik.http.routers.portainer.tls=true \\\n  --label traefik.http.routers.portainer.tls.certresolver=mdekort \\\n  --label traefik.http.middlewares.portainer_stripprefix.stripprefix.prefixes=/portainer \\\n  --label traefik.http.middlewares.portainer_stripprefix.stripprefix.forceslash=false \\\n  --label traefik.http.routers.portainer.middlewares=portainer_stripprefix@docker \\\n  portainer/portainer-ce:alpine \\\n  --admin-password admin\n\nExecStop=/usr/bin/docker stop %n\nExecStopPost=/usr/bin/docker rm -f %n\nType=forking\n\n[Install]\nWantedBy=multi-user.target\n",
+        "contents": "[Unit]\nDescription=Portainer Service\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nRestart=always\nExecStartPre=mkdir -p /storage/docker/portainer\nExecStartPre=-/usr/bin/docker rm -f portainer\nExecStartPre=-/usr/bin/docker network create --attachable lmserver\nExecStartPre=-/usr/bin/docker pull portainer/portainer-ce:alpine\nExecStart=/usr/bin/docker run \\\n  --name portainer \\\n  --rm \\\n  --volume /storage/docker/portainer:/data \\\n  --volume /var/run/docker.sock:/var/run/docker.sock:ro \\\n  --log-driver syslog \\\n  --log-opt 'syslog-address=udp://127.0.0.1:515' \\\n  --log-opt 'tag={{.Name}}/{{.FullID}}' \\\n  --network lmserver \\\n  --publish 9000:9000 \\\n  --label traefik.enable=true \\\n  --label traefik.http.routers.portainer.entrypoints=websecure \\\n  --label traefik.http.routers.portainer.rule='Host(`lmserver.mdekort.nl`) \u0026\u0026 PathPrefix(`/portainer`)' \\\n  --label traefik.http.services.portainer.loadbalancer.server.port=9000 \\\n  --label traefik.http.routers.portainer.tls=true \\\n  --label traefik.http.routers.portainer.tls.certresolver=mdekort \\\n  --label traefik.http.middlewares.portainer_stripprefix.stripprefix.prefixes=/portainer \\\n  --label traefik.http.middlewares.portainer_stripprefix.stripprefix.forceslash=false \\\n  --label traefik.http.routers.portainer.middlewares=portainer_stripprefix@docker \\\n  portainer/portainer-ce:alpine\n\n[Install]\nWantedBy=multi-user.target\n",
         "enabled": true,
-        "name": "portainer.service"
+        "name": "docker.portainer.service"
       }
     ]
   }
