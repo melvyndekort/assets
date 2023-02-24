@@ -59,7 +59,7 @@
         "name": "docker.service"
       },
       {
-        "contents": "[Unit]\nDescription=Portainer Service\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nRestart=always\nExecStartPre=-mkdir -p /var/mnt/storage/docker/portainer\nExecStartPre=-/usr/bin/docker rm -f portainer\nExecStartPre=-/usr/bin/docker network create --attachable lmserver\nExecStartPre=-/usr/bin/docker pull portainer/portainer-ce:alpine\nExecStartPre=/usr/bin/docker create \\\n  --name portainer \\\n  --rm \\\n  --volume /var/mnt/storage/docker/portainer:/data:rw \\\n  --volume /var/run/docker.sock:/var/run/docker.sock:ro \\\n  --log-driver syslog \\\n  --log-opt 'syslog-address=udp://127.0.0.1:515' \\\n  --log-opt 'tag={{.Name}}/{{.FullID}}' \\\n  --network lmserver \\\n  --publish 9443:9443 \\\n  portainer/portainer-ce:alpine\nExecStart=/usr/bin/docker start -a portainer\n\n[Install]\nWantedBy=multi-user.target\n",
+        "contents": "[Unit]\nDescription=Portainer Service\nAfter=docker.service\nRequires=docker.service\n\n[Service]\nRestart=always\nExecStartPre=-mkdir -p /var/mnt/storage/docker/portainer\nExecStartPre=-/usr/bin/docker rm -f portainer\nExecStartPre=-/usr/bin/docker pull portainer/portainer-ce:alpine\nExecStartPre=/usr/bin/docker create \\\n  --name portainer \\\n  --rm \\\n  --volume /var/mnt/storage/docker/portainer:/data:rw \\\n  --volume /var/run/docker.sock:/var/run/docker.sock:ro \\\n  --log-driver syslog \\\n  --log-opt 'syslog-address=udp://127.0.0.1:515' \\\n  --log-opt 'tag={{.Name}}/{{.FullID}}' \\\n  --publish 9443:9443 \\\n  portainer/portainer-ce:alpine\nExecStart=/usr/bin/docker start -a portainer\n\n[Install]\nWantedBy=multi-user.target\n",
         "enabled": true,
         "name": "portainer.service"
       }
