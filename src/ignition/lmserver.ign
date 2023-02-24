@@ -45,7 +45,7 @@
         "name": "var-mnt-storage.mount"
       },
       {
-        "contents": "[Unit]\nDescription=BTRFS scrub the /storage filesystem\n\n[Service]\nExecStart=btrfs scrub start -Bd /dev/disk/by-label/storage\n\n[Install]\nWantedBy=multi-user.target\n",
+        "contents": "[Unit]\nDescription=btrfs scrub of the storage filesystem\n\n[Service]\nExecStart=btrfs scrub start -Bd /dev/disk/by-label/storage\n\n[Install]\nWantedBy=multi-user.target\n",
         "enabled": true,
         "name": "scrubber.service"
       },
