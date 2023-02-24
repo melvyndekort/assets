@@ -74,7 +74,6 @@ systemd:
         Restart=always
         ExecStartPre=-mkdir -p /var/mnt/storage/docker/portainer
         ExecStartPre=-/usr/bin/docker rm -f portainer
-        ExecStartPre=-/usr/bin/docker network create --attachable lmserver
         ExecStartPre=-/usr/bin/docker pull portainer/portainer-ce:alpine
         ExecStartPre=/usr/bin/docker create \
           --name portainer \
@@ -84,7 +83,6 @@ systemd:
           --log-driver syslog \
           --log-opt 'syslog-address=udp://127.0.0.1:515' \
           --log-opt 'tag={{.Name}}/{{.FullID}}' \
-          --network lmserver \
           --publish 9443:9443 \
           portainer/portainer-ce:alpine
         ExecStart=/usr/bin/docker start -a portainer
