@@ -39,7 +39,7 @@ systemd:
       enabled: true
       contents: |
         [Unit]
-        Description=BTRFS scrub the /storage filesystem
+        Description=btrfs scrub of the storage filesystem
 
         [Service]
         ExecStart=btrfs scrub start -Bd /dev/disk/by-label/storage
