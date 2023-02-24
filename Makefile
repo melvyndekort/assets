@@ -1,4 +1,4 @@
-.PHONY := clean_secrets decrypt encrypt init plan apply butane
+.PHONY := clean_secrets decrypt encrypt init plan apply
 .DEFAULT_GOAL := apply
 
 ifndef AWS_SESSION_TOKEN
@@ -32,6 +32,3 @@ plan: init
 
 apply: init
 	@cd terraform && terraform apply
-
-butane:
-	@scripts/run-butane.sh
