@@ -5,9 +5,9 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
-  # Maintain dependencies for Docker
-  - package-ecosystem: "docker"
-    directory: "/"
+      interval: "weekly"
+  # Maintain dependencies for Terraform
+  - package-ecosystem: "terraform"
+    directory: "/terraform"
     schedule:
-      interval: "daily"
+      interval: "weekly"
