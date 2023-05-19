@@ -1,4 +1,12 @@
 terraform {
+  cloud {
+    organization = "melvyndekort"
+
+    workspaces {
+      name = "assets"
+    }
+  }
+
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"

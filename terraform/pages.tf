@@ -1,3 +1,7 @@
+locals {
+  cloudflare_account_id = data.terraform_remote_state.cloudsetup.outputs.cloudflare_account_id
+}
+
 resource "cloudflare_pages_project" "site" {
   account_id        = local.cloudflare_account_id
   name              = var.name
