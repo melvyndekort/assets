@@ -1,7 +1,10 @@
+name: 'Publish site'
+
 on:
+  workflow_dispatch:
   push:
     branches:
-      - 'main'
+      - main
 
 jobs:
   publish:
