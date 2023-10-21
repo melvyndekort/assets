@@ -1,9 +1,12 @@
 name: tfsec
+
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
   pull_request:
+
 jobs:
   tfsec:
     name: tfsec sarif report
