@@ -6,8 +6,16 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    assignees:
+      - "melvyndekort"
+    reviewers:
+      - "melvyndekort"
   # Maintain dependencies for Terraform
   - package-ecosystem: "terraform"
     directory: "/terraform"
     schedule:
       interval: "weekly"
+    assignees:
+      - "melvyndekort"
+    reviewers:
+      - "melvyndekort"
