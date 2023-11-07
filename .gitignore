@@ -7,3 +7,4 @@ go.sum
 .terraform/
 .terraform.lock.hcl
 secrets.yaml
+.vscode/
