@@ -10,5 +10,5 @@ resource "cloudflare_record" "site" {
   type    = "CNAME"
   ttl     = 1
   proxied = false
-  value   = "${var.name}.pages.dev"
+  content = "${var.name}.pages.dev"
 }
