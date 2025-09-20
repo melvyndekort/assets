@@ -1,11 +1,5 @@
-data "cloudflare_zones" "zone" {
-  filter {
-    name = "mdekort.nl"
-  }
-}
-
-resource "cloudflare_record" "site" {
-  zone_id = data.cloudflare_zones.zone.zones[0].id
+resource "cloudflare_dns_record" "apex" {
+  zone_id = data.terraform_remote_state.tf_cloudflare.outputs.mdekort_zone_id
   name    = var.domain_name
   type    = "CNAME"
   ttl     = 1

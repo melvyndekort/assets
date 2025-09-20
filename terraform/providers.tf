@@ -10,11 +10,11 @@ terraform {
   required_providers {
     cloudflare = {
       source  = "cloudflare/cloudflare"
-      version = ">= 3.0"
+      version = "~> 5.0"
     }
   }
 }
 
 provider "cloudflare" {
-  api_token = data.terraform_remote_state.cloudsetup.outputs.api_token_assets
+  api_token = data.terraform_remote_state.tf_cloudflare.outputs.api_token_assets
 }
