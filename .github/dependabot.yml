@@ -5,6 +5,14 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    rebase-strategy: "auto"
+    assignees:
+      - "melvyndekort"
+    reviewers:
+      - "melvyndekort"
+    directory: "/terraform"
+    schedule:
+      interval: "daily"
     assignees:
       - "melvyndekort"
     reviewers:
@@ -13,6 +21,7 @@ updates:
     directory: "/terraform"
     schedule:
       interval: "daily"
+    rebase-strategy: "auto"
     assignees:
       - "melvyndekort"
     reviewers:
